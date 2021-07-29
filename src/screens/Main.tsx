@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Button, StyleSheet, Text, View, SafeAreaView, Image } from 'react-native';
 import { User } from '@react-native-google-signin/google-signin';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -19,7 +18,7 @@ const Main: React.FC<Props> = ({ user }) => {
 
     const TabsNavigator = () => (
         <Tab.Navigator>
-            <Tab.Screen name="Tasks" component={Tasks} />
+            <Tab.Screen name="Tasks">{props => <Tasks user={user} tasks={[]} {...props} />}</Tab.Screen>
             <Tab.Screen name="Done" component={DoneTasks} />
         </Tab.Navigator>
     )
@@ -32,13 +31,5 @@ const Main: React.FC<Props> = ({ user }) => {
         </NavigationContainer>
     );
 }
-
-const s = StyleSheet.create({
-    container: {
-        flex: 1,
-        // alignItems: 'center',
-        // justifyContent: 'center'
-    }
-});
 
 export default Main;
