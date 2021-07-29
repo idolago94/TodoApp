@@ -131,7 +131,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.todoapp"
+        applicationId "com.todoapp3"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -189,8 +189,6 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
-
-    implementation(project(":react-native-community_google-signin"))
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'

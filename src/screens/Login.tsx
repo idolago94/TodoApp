@@ -32,7 +32,7 @@ const Login: React.FC = () => {
     }
 
     const WelcomeMessage = () => (
-        <View style={s.welcomeMessage}>
+        <View style={s.center}>
             <Image style={s.avatar} source={{ uri: userInfo?.user.photo || undefined }} />
             <Text>Welcome {userInfo?.user.name}</Text>
         </View>
@@ -41,7 +41,7 @@ const Login: React.FC = () => {
     return (
         <SafeAreaView style={s.container}>
             <Text style={s.appName}>TodoApp</Text>
-            <View style={s.mainContent}>
+            <View style={[s.mainContent, !userInfo && s.center]}>
                 {!userInfo ? <GoogleSigninButton
                     style={{ width: 192, height: 48 }}
                     size={GoogleSigninButton.Size.Wide}
@@ -58,19 +58,17 @@ const s = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
     },
+    center: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     appName: {
         fontSize: 40,
         fontWeight: 'bold',
         margin: 16
     },
     mainContent: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    welcomeMessage: {
-        alignItems: 'center',
-        justifyContent: 'center'
+        flex: 1
     },
     avatar: {
         height: 100,
