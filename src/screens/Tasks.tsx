@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Button, StyleSheet, Text, View, SafeAreaView, Image, FlatList } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
 import { User } from '@react-native-google-signin/google-signin';
+import AddTask from '../components/AddTask';
 
 type Props = {
     tasks: Array<Object>,
@@ -31,6 +32,8 @@ const Tasks: React.FC<Props> = ({ tasks = [], user }) => {
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={Task}
                 /> : <NoTasks />}
+
+            <AddTask />
         </View>
     );
 }
