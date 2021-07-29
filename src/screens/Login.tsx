@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Button, StyleSheet, Text, View, SafeAreaView, Image } from 'react-native';
-import {
-    GoogleSignin,
-    GoogleSigninButton,
-    statusCodes,
-    GoogleSigninButtonProps,
-    User
-} from '@react-native-google-signin/google-signin';
-
+import { StyleSheet, Text, SafeAreaView, View } from 'react-native';
+import { GoogleSignin, GoogleSigninButton, User } from '@react-native-google-signin/google-signin';
+import Main from './Main';
 
 const Login: React.FC = () => {
     const [userInfo, setUserInfo] = useState<User | null>(null)
@@ -22,41 +16,32 @@ const Login: React.FC = () => {
 
     const onGoogleLogin = async () => {
         try {
-            // await GoogleSignin.hasPlayServices();
             const loginRes = await GoogleSignin.signIn();
-            console.log("onGoogleLogin -> userInfo", userInfo)
+            console.log("onGoogleLogin -> userInfo", loginRes)
             setUserInfo(loginRes)
         } catch (error) {
             console.log("onGoogleLogin -> error", error)
         }
     }
 
-    const WelcomeMessage = () => (
-        <View style={s.center}>
-            <Image style={s.avatar} source={{ uri: userInfo?.user.photo || undefined }} />
-            <Text>Welcome {userInfo?.user.name}</Text>
-        </View>
-    )
-
     return (
         <SafeAreaView style={s.container}>
-            <Text style={s.appName}>TodoApp</Text>
-            <View style={[s.mainContent, !userInfo && s.center]}>
-                {!userInfo ? <GoogleSigninButton
+            {userInfo ? <Main user={userInfo} /> : <View style={s.center}>
+                <Text style={s.appName}>TodoApp</Text>
+                <GoogleSigninButton
                     style={{ width: 192, height: 48 }}
                     size={GoogleSigninButton.Size.Wide}
                     color={GoogleSigninButton.Color.Dark}
                     onPress={onGoogleLogin}
-                /> : <WelcomeMessage />}
-            </View>
+                />
+            </View>}
         </SafeAreaView>
     )
 }
 
 const s = StyleSheet.create({
     container: {
-        flex: 1,
-        alignItems: 'center',
+        flex: 1
     },
     center: {
         alignItems: 'center',
@@ -66,15 +51,6 @@ const s = StyleSheet.create({
         fontSize: 40,
         fontWeight: 'bold',
         margin: 16
-    },
-    mainContent: {
-        flex: 1
-    },
-    avatar: {
-        height: 100,
-        width: 100,
-        borderRadius: 999,
-        marginBottom: 5
     }
 });
 
