@@ -1,76 +1,83 @@
-import React from 'react';
-import { Button, StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Button, StyleSheet, Text, View, SafeAreaView, Image } from 'react-native';
+import {
+    GoogleSignin,
+    GoogleSigninButton,
+    statusCodes,
+    GoogleSigninButtonProps,
+    User
+} from '@react-native-google-signin/google-signin';
+
 
 const Login: React.FC = () => {
+    const [userInfo, setUserInfo] = useState<User | null>(null)
+    useEffect(() => {
+        GoogleSignin.configure({
+            scopes: ['email'],
+            webClientId:
+                '405950717468-9t4c5hmosf8ffi87jilfcv04mdgdog6j.apps.googleusercontent.com',
+            offlineAccess: true
+        });
+    }, [])
+
+    const onGoogleLogin = async () => {
+        try {
+            // await GoogleSignin.hasPlayServices();
+            const loginRes = await GoogleSignin.signIn();
+            console.log("onGoogleLogin -> userInfo", userInfo)
+            setUserInfo(loginRes)
+        } catch (error) {
+            console.log("onGoogleLogin -> error", error)
+        }
+    }
+
+    const WelcomeMessage = () => (
+        <View style={s.welcomeMessage}>
+            <Image style={s.avatar} source={{ uri: userInfo?.user.photo || undefined }} />
+            <Text>Welcome {userInfo?.user.name}</Text>
+        </View>
+    )
+
     return (
         <SafeAreaView style={s.container}>
-            <Text style={s.greeting}>Hello</Text>
+            <Text style={s.appName}>TodoApp</Text>
+            <View style={s.mainContent}>
+                {!userInfo ? <GoogleSigninButton
+                    style={{ width: 192, height: 48 }}
+                    size={GoogleSigninButton.Size.Wide}
+                    color={GoogleSigninButton.Color.Dark}
+                    onPress={onGoogleLogin}
+                /> : <WelcomeMessage />}
+            </View>
         </SafeAreaView>
     )
 }
 
 const s = StyleSheet.create({
     container: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
+        flex: 1,
+        alignItems: 'center',
     },
-    greeting: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      margin: 16
+    appName: {
+        fontSize: 40,
+        fontWeight: 'bold',
+        margin: 16
+    },
+    mainContent: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    welcomeMessage: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    avatar: {
+        height: 100,
+        width: 100,
+        borderRadius: 999,
+        marginBottom: 5
     }
-  });
+});
 
 export default Login;
-
-// export type Props = {
-//   name: string;
-//   baseEnthusiasmLevel?: number;
-// };
-
-// const Hello: React.FC<Props> = ({
-//   name,
-//   baseEnthusiasmLevel = 0
-// }) => {
-//   const [enthusiasmLevel, setEnthusiasmLevel] = React.useState(
-//     baseEnthusiasmLevel
-//   );
-
-//   const onIncrement = () =>
-//     setEnthusiasmLevel(enthusiasmLevel + 1);
-//   const onDecrement = () =>
-//     setEnthusiasmLevel(
-//       enthusiasmLevel > 0 ? enthusiasmLevel - 1 : 0
-//     );
-
-//   const getExclamationMarks = (numChars: number) =>
-//     numChars > 0 ? Array(numChars + 1).join('!') : '';
-
-//   return (
-//     <View style={styles.container}>
-//       <Text style={styles.greeting}>
-//         Hello {name}
-//         {getExclamationMarks(enthusiasmLevel)}
-//       </Text>
-//       <View>
-//         <Button
-//           title="Increase enthusiasm"
-//           accessibilityLabel="increment"
-//           onPress={onIncrement}
-//           color="blue"
-//         />
-//         <Button
-//           title="Decrease enthusiasm"
-//           accessibilityLabel="decrement"
-//           onPress={onDecrement}
-//           color="red"
-//         />
-//       </View>
-//     </View>
-//   );
-// };
-
-
-
-// export default Hello;
