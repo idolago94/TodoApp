@@ -1,5 +1,7 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { StyleSheet, Text, View, Switch } from 'react-native';
+import SVGIcon from './SVGIcon';
+import imgSrc from '../utils/Images';
 
 export type TaskProps = {
     title: String,
@@ -10,7 +12,29 @@ export type TaskProps = {
 
 
 const Task: React.FC<TaskProps> = ({ title, isDone, index }) => (
-    <Text>task {index}</Text>
+    <View style={[s.container, s.row]}>
+        <View style={s.row}>
+            <Switch value={!!isDone} />
+            <Text>{title}</Text>
+        </View>
+        <View style={s.row}>
+            <SVGIcon source={imgSrc.a_icons_edit_black_enabled} width={23} height={23} />
+            <SVGIcon source={imgSrc.a_icon_delete_green} width={23} height={23} />
+        </View>
+    </View>
 )
+
+const s = StyleSheet.create({
+    container: {
+        padding: 10,
+        borderBottomColor: 'rgba(0, 0, 0, .2)',
+        borderBottomWidth: 1,
+        justifyContent: 'space-between',
+    },
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    }
+})
 
 export default Task

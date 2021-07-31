@@ -56,9 +56,7 @@ const s = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: 10,
-        marginHorizontal: 15,
-        borderBottomColor: 'rgba(0, 0, 0, .1)',
-        borderBottomWidth: 1
+        marginHorizontal: 15
     },
     avatar: {
         width: 70,

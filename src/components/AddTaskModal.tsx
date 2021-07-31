@@ -14,7 +14,10 @@ const AddTaskModal: React.FC<Props> = () => {
         let newTasks = tasks.slice()
         newTasks.push({ title: taskDescription, isDone: null })
         updateTasks(newTasks)
+        handleCloseModal()
+    }
 
+    const handleCloseModal = () => {
         setModalVisible(false)
         setTaskDescription('')
     }
@@ -47,7 +50,7 @@ const AddTaskModal: React.FC<Props> = () => {
                         </View>
                         <View style={[s.buttonWrap, s.bgCancel, s.grow]}>
                             <Button
-                                onPress={() => setModalVisible(false)}
+                                onPress={handleCloseModal}
                                 title="Cancel"
                                 color="white"
                             />
