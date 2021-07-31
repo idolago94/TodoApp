@@ -4,7 +4,7 @@ import SVGIcon from './SVGIcon';
 import imgSrc from '../utils/Images';
 import { TasksContext } from '../utils/TaskContext';
 import AddTaskModal from './AddTaskModal';
-
+import moment from 'moment'
 export type TaskProps = {
     title: String,
     isDone: Date | null,
@@ -44,19 +44,22 @@ const Task: React.FC<TaskProps> = ({ title, isDone, index }) => {
     }
 
     return (
-        <View style={[s.container, s.row]}>
-            <View style={s.row}>
-                <Switch onChange={handleTaskComplete} value={!!isDone} />
-                <Text>{title}</Text>
+        <View style={s.container}>
+            <View style={[s.row, s.infoWrap]}>
+                <View style={s.row}>
+                    <Switch onChange={handleTaskComplete} value={!!isDone} />
+                    <Text>{title}</Text>
+                </View>
+                <View style={s.row}>
+                    <TouchableOpacity onPress={() => setEditModalVisible(true)}>
+                        <SVGIcon source={imgSrc.a_icons_edit} width={23} height={23} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={handleDeleteTask}>
+                        <SVGIcon source={imgSrc.a_icon_delete} width={23} height={23} />
+                    </TouchableOpacity>
+                </View>
             </View>
-            <View style={s.row}>
-                <TouchableOpacity onPress={() => setEditModalVisible(true)}>
-                    <SVGIcon source={imgSrc.a_icons_edit} width={23} height={23} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={handleDeleteTask}>
-                    <SVGIcon source={imgSrc.a_icon_delete} width={23} height={23} />
-                </TouchableOpacity>
-            </View>
+            {isDone && <Text style={s.doneDate}>Done at: {moment(isDone).format('DD/MM/YYYY')}</Text>}
 
             <AddTaskModal editValues={{ title, isDone, index }} visible={isEditModalVisible} onClose={() => setEditModalVisible(false)} />
         </View>
@@ -68,11 +71,17 @@ const s = StyleSheet.create({
         padding: 10,
         borderBottomColor: 'rgba(0, 0, 0, .2)',
         borderBottomWidth: 1,
-        justifyContent: 'space-between',
     },
     row: {
         flexDirection: 'row',
         alignItems: 'center'
+    },
+    infoWrap: {
+        justifyContent: 'space-between',
+    },
+    doneDate: {
+        fontSize: 12,
+        color: 'rgba(0, 0, 0, .5)'
     }
 })
 
