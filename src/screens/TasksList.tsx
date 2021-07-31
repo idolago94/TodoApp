@@ -4,18 +4,18 @@ import { User } from '@react-native-google-signin/google-signin';
 import Task from '../components/Task';
 import AddTaskModal from '../components/AddTaskModal';
 import { TasksContext } from '../utils/TaskContext';
+import { UserContext } from '../utils/UserContext';
 
-type Props = {
-    user: User
-};
+type Props = {};
 
-const TasksList: React.FC<Props> = ({ user }) => {
+const TasksList: React.FC<Props> = () => {
+    const { user } = useContext(UserContext)
     const { tasks } = useContext(TasksContext)
 
     const WelcomeMessage = () => (
         <View style={s.userInfo}>
-            <Image style={s.avatar} source={{ uri: user.user.photo || undefined }} />
-            <Text style={s.userInfoText}>Welcome {user.user.name}</Text>
+            <Image style={s.avatar} source={{ uri: user?.user.photo || undefined }} />
+            <Text style={s.userInfoText}>Welcome {user?.user.name}</Text>
         </View>
     )
 

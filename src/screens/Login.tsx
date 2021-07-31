@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, SafeAreaView, View } from 'react-native';
 import { GoogleSignin, GoogleSigninButton, User } from '@react-native-google-signin/google-signin';
 import Main from './Main';
+import { UserContext } from '../utils/UserContext';
 
 const Login: React.FC = () => {
     const [userInfo, setUserInfo] = useState<User | null>(null)
@@ -26,15 +27,17 @@ const Login: React.FC = () => {
 
     return (
         <SafeAreaView style={s.container}>
-            {userInfo ? <Main user={userInfo} /> : <View style={s.center}>
-                <Text style={s.appName}>TodoApp</Text>
-                <GoogleSigninButton
-                    style={{ width: 192, height: 48 }}
-                    size={GoogleSigninButton.Size.Wide}
-                    color={GoogleSigninButton.Color.Dark}
-                    onPress={onGoogleLogin}
-                />
-            </View>}
+            <UserContext.Provider value={{ user: userInfo, logout: () => setUserInfo(null) }}>
+                {userInfo ? <Main /> : <View style={s.center}>
+                    <Text style={s.appName}>TodoApp</Text>
+                    <GoogleSigninButton
+                        style={{ width: 192, height: 48 }}
+                        size={GoogleSigninButton.Size.Wide}
+                        color={GoogleSigninButton.Color.Dark}
+                        onPress={onGoogleLogin}
+                    />
+                </View>}
+            </UserContext.Provider>
         </SafeAreaView>
     )
 }
