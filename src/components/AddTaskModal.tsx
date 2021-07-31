@@ -1,18 +1,27 @@
 import React, { useState, useContext } from 'react';
 import { Button, StyleSheet, Text, View, TextInput, Modal } from 'react-native';
 import { TasksContext } from '../utils/TaskContext';
+import { TaskProps } from './Task';
 
 type Props = {
+    editValues?: TaskProps
+    visible?: Boolean,
+    onClose?: Function
 };
 
-const AddTaskModal: React.FC<Props> = () => {
+const AddTaskModal: React.FC<Props> = ({ editValues, visible, onClose }) => {
     const [modalVisible, setModalVisible] = useState(false)
-    const [taskDescription, setTaskDescription] = useState('')
+    const [taskDescription, setTaskDescription] = useState(editValues?.title.toString() || '')
     const { tasks, updateTasks } = useContext(TasksContext)
 
     const handleSaveTask = () => {
         let newTasks = tasks.slice()
-        newTasks.push({ title: taskDescription, isDone: null })
+        if (editValues?.index === 0 || editValues?.index) { // edit mode
+            newTasks[+editValues.index] = { ...newTasks[+editValues.index], title: taskDescription }
+        } else if (!editValues) { // new task mode
+            newTasks.push({ title: taskDescription, isDone: null })
+        }
+
         updateTasks(newTasks)
         handleCloseModal()
     }
@@ -20,20 +29,21 @@ const AddTaskModal: React.FC<Props> = () => {
     const handleCloseModal = () => {
         setModalVisible(false)
         setTaskDescription('')
+        onClose && onClose()
     }
 
     return (
         <>
-            <View style={[s.buttonWrap, s.bgPrimary]}>
+            {!editValues && <View style={[s.buttonWrap, s.bgPrimary]}>
                 <Button
                     onPress={() => setModalVisible(true)}
                     title="Add New Task"
                     color="white"
                 />
-            </View>
+            </View>}
             <Modal
                 animationType="slide"
-                visible={modalVisible}
+                visible={modalVisible || !!visible}
                 presentationStyle='pageSheet'
                 onRequestClose={() => setModalVisible(!modalVisible)}
             >

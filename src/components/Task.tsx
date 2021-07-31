@@ -1,8 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View, Switch, TouchableOpacity } from 'react-native';
 import SVGIcon from './SVGIcon';
 import imgSrc from '../utils/Images';
 import { TasksContext } from '../utils/TaskContext';
+import AddTaskModal from './AddTaskModal';
 
 export type TaskProps = {
     title: String,
@@ -13,6 +14,7 @@ export type TaskProps = {
 
 
 const Task: React.FC<TaskProps> = ({ title, isDone, index }) => {
+    const [isEditModalVisible, setEditModalVisible] = useState(false)
     const { tasks, updateTasks } = useContext(TasksContext)
 
     const handleTaskComplete = () => {
@@ -48,13 +50,15 @@ const Task: React.FC<TaskProps> = ({ title, isDone, index }) => {
                 <Text>{title}</Text>
             </View>
             <View style={s.row}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => setEditModalVisible(true)}>
                     <SVGIcon source={imgSrc.a_icons_edit_black_enabled} width={23} height={23} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={handleDeleteTask}>
                     <SVGIcon source={imgSrc.a_icon_delete_green} width={23} height={23} />
                 </TouchableOpacity>
             </View>
+
+            <AddTaskModal editValues={{ title, isDone, index }} visible={isEditModalVisible} onClose={() => setEditModalVisible(false)} />
         </View>
     )
 }
