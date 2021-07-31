@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View, Switch } from 'react-native';
+import { StyleSheet, Text, View, Switch, TouchableOpacity } from 'react-native';
 import SVGIcon from './SVGIcon';
 import imgSrc from '../utils/Images';
 import { TasksContext } from '../utils/TaskContext';
@@ -15,7 +15,7 @@ export type TaskProps = {
 const Task: React.FC<TaskProps> = ({ title, isDone, index }) => {
     const { tasks, updateTasks } = useContext(TasksContext)
 
-    const handleTaskComplete = async () => {
+    const handleTaskComplete = () => {
         if (index === 0 || index) {
             try {
                 let newTasks = tasks.slice()
@@ -29,6 +29,18 @@ const Task: React.FC<TaskProps> = ({ title, isDone, index }) => {
         }
     }
 
+    const handleDeleteTask = () => {
+        if (index === 0 || index) {
+            try {
+                let newTasks = tasks.slice()
+                newTasks.splice(+index, 1)
+                updateTasks(newTasks)
+            } catch (e) {
+                console.log("handleDeleteTask -> e", e)
+            }
+        }
+    }
+
     return (
         <View style={[s.container, s.row]}>
             <View style={s.row}>
@@ -36,8 +48,12 @@ const Task: React.FC<TaskProps> = ({ title, isDone, index }) => {
                 <Text>{title}</Text>
             </View>
             <View style={s.row}>
-                <SVGIcon source={imgSrc.a_icons_edit_black_enabled} width={23} height={23} />
-                <SVGIcon source={imgSrc.a_icon_delete_green} width={23} height={23} />
+                <TouchableOpacity>
+                    <SVGIcon source={imgSrc.a_icons_edit_black_enabled} width={23} height={23} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={handleDeleteTask}>
+                    <SVGIcon source={imgSrc.a_icon_delete_green} width={23} height={23} />
+                </TouchableOpacity>
             </View>
         </View>
     )
