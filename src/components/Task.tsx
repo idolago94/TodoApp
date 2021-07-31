@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, Text, View, Switch } from 'react-native';
 import SVGIcon from './SVGIcon';
 import imgSrc from '../utils/Images';
+import { TasksContext } from '../utils/TaskContext';
 
 export type TaskProps = {
     title: String,
@@ -11,18 +12,36 @@ export type TaskProps = {
 
 
 
-const Task: React.FC<TaskProps> = ({ title, isDone, index }) => (
-    <View style={[s.container, s.row]}>
-        <View style={s.row}>
-            <Switch value={!!isDone} />
-            <Text>{title}</Text>
+const Task: React.FC<TaskProps> = ({ title, isDone, index }) => {
+    const { tasks, updateTasks } = useContext(TasksContext)
+
+    const handleTaskComplete = async () => {
+        if (index === 0 || index) {
+            try {
+                let newTasks = tasks.slice()
+                if (newTasks[+index].isDone) {
+                    newTasks[+index].isDone = null
+                } else newTasks[+index].isDone = new Date()
+                updateTasks(newTasks)
+            } catch (e) {
+                console.log("hanleTaskComplete -> e", e)
+            }
+        }
+    }
+
+    return (
+        <View style={[s.container, s.row]}>
+            <View style={s.row}>
+                <Switch onChange={handleTaskComplete} value={!!isDone} />
+                <Text>{title}</Text>
+            </View>
+            <View style={s.row}>
+                <SVGIcon source={imgSrc.a_icons_edit_black_enabled} width={23} height={23} />
+                <SVGIcon source={imgSrc.a_icon_delete_green} width={23} height={23} />
+            </View>
         </View>
-        <View style={s.row}>
-            <SVGIcon source={imgSrc.a_icons_edit_black_enabled} width={23} height={23} />
-            <SVGIcon source={imgSrc.a_icon_delete_green} width={23} height={23} />
-        </View>
-    </View>
-)
+    )
+}
 
 const s = StyleSheet.create({
     container: {

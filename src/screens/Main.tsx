@@ -25,6 +25,7 @@ const Main: React.FC<Props> = ({ user }) => {
     const fetchUserTasks = async () => {
         try {
             const userTasks = await Storage.getTasks(user.user.id)
+            console.log("fetchUserTasks -> userTasks", userTasks)
             setTasks(userTasks)
         } catch (e) {
             console.log("fetchUserTasks -> e", e)

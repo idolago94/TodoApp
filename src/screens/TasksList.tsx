@@ -32,7 +32,7 @@ const TasksList: React.FC<Props> = ({ user }) => {
                 <FlatList
                     data={tasks}
                     keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item, index }) => <Task index={index} {...item} />}
+                    renderItem={({ item, index }) => !item.isDone ? <Task index={index} {...item} /> : null}
                 /> : <NoTasks />}
 
             <AddTaskModal />
