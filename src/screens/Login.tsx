@@ -18,7 +18,6 @@ const Login: React.FC = () => {
     const onGoogleLogin = async () => {
         try {
             const loginRes = await GoogleSignin.signIn();
-            console.log("onGoogleLogin -> userInfo", loginRes)
             setUserInfo(loginRes)
         } catch (error) {
             console.log("onGoogleLogin -> error", error)

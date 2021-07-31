@@ -51,7 +51,6 @@ const Main: React.FC<Props> = () => {
 
     const getTabOptions = (route: Route): BottomTabNavigationOptions => ({
         tabBarIcon: ({ focused, color, size }) => {
-            console.log("route", route.name)
             switch (route.name) {
                 case 'Tasks': return <SVGIcon fill={getIconColor(focused)} source={imgSrc.a_icons_edit_black_enabled} height={20} width={20} />
                 case 'Done': return <SVGIcon fill={getIconColor(focused)} source={imgSrc.a_icon_success} height={20} width={20} />
