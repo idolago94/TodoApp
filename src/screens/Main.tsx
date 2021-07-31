@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { User } from '@react-native-google-signin/google-signin';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer, Route } from '@react-navigation/native';
+import { createBottomTabNavigator, BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import TasksList from './TasksList';
 import DoneTasks from './DoneTasks';
 import { TaskProps } from '../components/Task';
 import { TasksContext } from '../utils/TaskContext';
 import Storage from '../utils/Storage';
+import SVGIcon from '../components/SVGIcon';
+import imgSrc from '../utils/Images';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -36,13 +38,28 @@ const Main: React.FC<Props> = ({ user }) => {
         try {
             await Storage.setTasks(user.user.id, newTasks)
             setTasks(newTasks)
-        } catch(e) {
+        } catch (e) {
 
         }
     }
 
+    const getIconColor = (isFocused: Boolean): String => isFocused ? '#0093d1' : 'black'
+
+    const getTabOptions = (route: Route): BottomTabNavigationOptions => ({
+        tabBarIcon: ({ focused, color, size }) => {
+            console.log("route", route.name)
+            switch (route.name) {
+                case 'Tasks': return <SVGIcon fill={getIconColor(focused)} source={imgSrc.a_icons_edit_black_enabled} height={20} width={20} />
+                case 'Done': return <SVGIcon fill={getIconColor(focused)} source={imgSrc.a_icon_success} height={20} width={20} />
+                default: return <SVGIcon fill={getIconColor(focused)} source={imgSrc.a_icons_edit_black_enabled} height={20} width={20} />
+            }
+        }
+    })
+
     const TabsNavigator = () => (
-        <Tab.Navigator>
+        <Tab.Navigator
+            screenOptions={({ route }) => getTabOptions(route)}
+        >
             <Tab.Screen name="Tasks">{props => <TasksList user={user} {...props} />}</Tab.Screen>
             <Tab.Screen name="Done" component={DoneTasks} />
         </Tab.Navigator>
