@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Image, StyleSheet, TouchableOpacity } from 'react-native'
-import { User } from '@react-native-google-signin/google-signin';
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import { NavigationContainer, Route } from '@react-navigation/native';
 import { createBottomTabNavigator, BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
@@ -52,9 +51,9 @@ const Main: React.FC<Props> = () => {
     const getTabOptions = (route: Route): BottomTabNavigationOptions => ({
         tabBarIcon: ({ focused, color, size }) => {
             switch (route.name) {
-                case 'Tasks': return <SVGIcon fill={getIconColor(focused)} source={imgSrc.a_icons_edit_black_enabled} height={20} width={20} />
+                case 'Tasks': return <SVGIcon fill={getIconColor(focused)} source={imgSrc.a_icons_edit} height={20} width={20} />
                 case 'Done': return <SVGIcon fill={getIconColor(focused)} source={imgSrc.a_icon_success} height={20} width={20} />
-                default: return <SVGIcon fill={getIconColor(focused)} source={imgSrc.a_icons_edit_black_enabled} height={20} width={20} />
+                default: return <SVGIcon fill={getIconColor(focused)} source={imgSrc.a_icons_edit} height={20} width={20} />
             }
         }
     })
@@ -70,7 +69,7 @@ const Main: React.FC<Props> = () => {
 
     const StackNavigatorOptions: StackNavigationOptions = {
         headerRight: (props) => <TouchableOpacity onPress={() => logout()} {...props} >
-            <SVGIcon style={s.logoutIcon} source={imgSrc.a_icons_log_out_red} width={25} height={25} />
+            <SVGIcon style={s.logoutIcon} source={imgSrc.a_icons_log_out} width={25} height={25} />
         </TouchableOpacity>
     }
 

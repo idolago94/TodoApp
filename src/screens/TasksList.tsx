@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
-import { User } from '@react-native-google-signin/google-signin';
 import Task from '../components/Task';
 import AddTaskModal from '../components/AddTaskModal';
 import { TasksContext } from '../utils/TaskContext';

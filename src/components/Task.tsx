@@ -51,10 +51,10 @@ const Task: React.FC<TaskProps> = ({ title, isDone, index }) => {
             </View>
             <View style={s.row}>
                 <TouchableOpacity onPress={() => setEditModalVisible(true)}>
-                    <SVGIcon source={imgSrc.a_icons_edit_black_enabled} width={23} height={23} />
+                    <SVGIcon source={imgSrc.a_icons_edit} width={23} height={23} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={handleDeleteTask}>
-                    <SVGIcon source={imgSrc.a_icon_delete_green} width={23} height={23} />
+                    <SVGIcon source={imgSrc.a_icon_delete} width={23} height={23} />
                 </TouchableOpacity>
             </View>
 
