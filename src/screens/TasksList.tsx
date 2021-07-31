@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
 import { User } from '@react-native-google-signin/google-signin';
-import AddTask from '../components/AddTask';
+import Task from '../components/Task';
+import AddTaskModal from '../components/AddTaskModal';
+import { TasksContext } from '../utils/TaskContext';
 
 type Props = {
-    tasks: Array<Object>,
     user: User
 };
 
-const Tasks: React.FC<Props> = ({ tasks = [], user }) => {
+const TasksList: React.FC<Props> = ({ user }) => {
+    const { tasks } = useContext(TasksContext)
 
     const WelcomeMessage = () => (
         <View style={s.userInfo}>
@@ -26,26 +28,17 @@ const Tasks: React.FC<Props> = ({ tasks = [], user }) => {
     return (
         <View style={s.container}>
             <WelcomeMessage />
-            {tasks.length > 0 ?
+            {tasks.filter(t => !t.isDone).length > 0 ?
                 <FlatList
                     data={tasks}
                     keyExtractor={(item, index) => index.toString()}
-                    renderItem={Task}
+                    renderItem={({ item, index }) => <Task index={index} {...item} />}
                 /> : <NoTasks />}
 
-            <AddTask />
+            <AddTaskModal />
         </View>
     );
 }
-
-type TaskProps = {
-    item: Object,
-    index: Number
-};
-
-const Task: React.FC<TaskProps> = ({ item, index }) => (
-    <Text>task {index}</Text>
-)
 
 const s = StyleSheet.create({
     container: {
@@ -79,4 +72,4 @@ const s = StyleSheet.create({
     }
 });
 
-export default Tasks;
+export default TasksList;

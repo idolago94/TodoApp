@@ -1,12 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, StyleSheet, Text, View, TextInput, Modal } from 'react-native';
+import { TasksContext } from '../utils/TaskContext';
 
 type Props = {
 };
 
-const AddTask: React.FC<Props> = () => {
+const AddTaskModal: React.FC<Props> = () => {
     const [modalVisible, setModalVisible] = useState(false)
     const [taskDescription, setTaskDescription] = useState('')
+    const { tasks, updateTasks } = useContext(TasksContext)
+
+    const handleSaveTask = () => {
+        let newTasks = tasks.slice()
+        newTasks.push({ title: taskDescription, isDone: null })
+        updateTasks(newTasks)
+
+        setModalVisible(false)
+        setTaskDescription('')
+    }
 
     return (
         <>
@@ -29,7 +40,7 @@ const AddTask: React.FC<Props> = () => {
                     <View style={s.modalButtonsWrap}>
                         <View style={[s.buttonWrap, s.bgPrimary, s.grow]}>
                             <Button
-                                onPress={() => { }}
+                                onPress={handleSaveTask}
                                 title="Save"
                                 color="white"
                             />
@@ -75,4 +86,4 @@ const s = StyleSheet.create({
     grow: { flexGrow: 1 }
 });
 
-export default AddTask;
+export default AddTaskModal;
